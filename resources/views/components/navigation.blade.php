@@ -31,12 +31,14 @@
                     </li>
                     
                     @auth
-                        <!-- Dashboard Link -->
+                        @if(auth()->user()->isStaff() || auth()->user()->isAdmin())
+                        <!-- Dashboard Link - Only for Staff and Admin -->
                         <li class="nav-item d-none d-lg-block">
                             <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">
                                 <i class="fas fa-tachometer-alt me-1"></i> Dashboard
                             </a>
                         </li>
+                        @endif
                         
                         <!-- User Dropdown -->
                         <li class="nav-item dropdown">
@@ -70,6 +72,7 @@
 
 <!-- Mobile Menu (Dashboard) -->
 @auth
+    @if(auth()->user()->isStaff() || auth()->user()->isAdmin())
     <div class="d-lg-none bg-primary py-2">
         <div class="container">
             <a href="{{ route('dashboard') }}" class="text-white text-decoration-none d-flex align-items-center">
@@ -77,6 +80,7 @@
             </a>
         </div>
     </div>
+    @endif
 @endauth
 
 <style>
