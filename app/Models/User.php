@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Traits\HasRoles;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -10,7 +11,11 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles;
+
+    const ROLE_ADMIN = 'admin';
+    const ROLE_STAFF = 'staff';
+    const ROLE_RESIDENT = 'resident';
 
     /**
      * The attributes that are mass assignable.
@@ -43,6 +48,20 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    /**
+     * Get all possible roles.
+     *
+     * @return array
+     */
+    public static function getRoles()
+    {
+        return [
+            self::ROLE_ADMIN => 'Administrator',
+            self::ROLE_STAFF => 'Staff',
+            self::ROLE_RESIDENT => 'Resident',
+        ];
+    }
 
     /**
      * The "booted" method of the model.
