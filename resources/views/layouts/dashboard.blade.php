@@ -26,18 +26,33 @@
         }
         
         .navbar {
-            padding: 0.5rem 0;
+            padding: 0.5rem 2rem;
             background-color: #003366 !important;
             height: var(--navbar-height);
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        @media (max-width: 991.98px) {
+            .navbar {
+                padding: 0.5rem 1rem;
+            }
         }
         
         .navbar-brand {
             display: flex;
             align-items: center;
             color: #ffffff !important;
-            font-size: 1.5rem;
+            font-size: 1.1rem;
             font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .navbar-brand small {
+            font-size: 0.75rem;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+            opacity: 0.9;
         }
         
         .navbar-nav .nav-link {
@@ -216,19 +231,25 @@
             <button class="btn btn-link text-white d-lg-none" id="sidebarToggle">
                 <i class="fas fa-bars"></i>
             </button>
-            <a class="navbar-brand" href="{{ route('dashboard') }}">
-                <i class="fas fa-city me-2"></i>
-                Barangay Portal
+            <a class="navbar-brand d-flex align-items-center" href="{{ route('dashboard') }}">
+                <img src="{{ asset('images/logo/brgy-logo.png') }}" alt="Barangay Logo" class="me-2" style="height: 40px;">
+                <div class="d-flex flex-column">
+                    <span class="fw-bold mb-0">BARANGAY BAGONG BARRIO</span>
+                    <small class="text-white-50">Management System</small>
+                </div>
             </a>
             <div class="ms-auto d-flex align-items-center">
                 <div class="dropdown">
                     <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <div class="me-2 d-none d-md-block">
-                            <div class="fw-semibold">{{ Auth::user()->name }}</div>
-                            <div class="small text-white-50">Administrator</div>
+                        <div class="me-3 text-end d-none d-md-block">
+                            <div class="fw-semibold text-white text-uppercase">{{ strtoupper(Auth::user()->name) }}</div>
+                            <div class="badge bg-white text-primary px-2 py-1" style="font-size: 0.7rem;">
+                                <i class="fas fa-user-shield me-1"></i>
+                                {{ ucfirst(Auth::user()->role) }}
+                            </div>
                         </div>
-                        <div class="rounded-circle bg-white text-primary d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
-                            <i class="fas fa-user"></i>
+                        <div class="rounded-circle bg-primary bg-opacity-25 d-flex align-items-center justify-content-center" style="width: 45px; height: 45px;">
+                            <i class="fas fa-user text-white"></i>
                         </div>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
