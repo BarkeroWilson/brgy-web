@@ -88,13 +88,37 @@
                 </div>
             </div>
         </div>
-    </div>
 
     <!-- Content Row -->
     <div class="row">
+        <!-- Quick Actions (hidden by default) -->
+        <div class="col-lg-4 col-xxl-3 mb-4 order-lg-2" id="quickActionsContainer" style="display: none;">
+            <div class="card border-left-primary shadow-sm h-100">
+                <div class="card-header bg-white py-3 border-bottom">
+                    <h6 class="m-0 font-weight-600 text-primary">Quick Actions</h6>
+                </div>
+                <div class="card-body p-3">
+                    <div class="d-grid gap-2">
+                        <a href="#" class="btn btn-outline-primary btn-sm text-left d-flex align-items-center">
+                            <i class="fas fa-user-plus me-2"></i> Add New Resident
+                        </a>
+                        <a href="#" class="btn btn-outline-primary btn-sm text-left d-flex align-items-center">
+                            <i class="fas fa-calendar-plus me-2"></i> Create Event
+                        </a>
+                        <a href="#" class="btn btn-outline-primary btn-sm text-left d-flex align-items-center">
+                            <i class="fas fa-bullhorn me-2"></i> Post Announcement
+                        </a>
+                        <a href="#" class="btn btn-outline-primary btn-sm text-left d-flex align-items-center">
+                            <i class="fas fa-file-export me-2"></i> Generate Report
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
         <!-- Recent Activity -->
-        <div class="col-lg-8 mb-4">
-            <div class="card shadow mb-4">
+        <div class="col-lg-8 col-xxl-9 mb-4 order-lg-1" id="recentActivityContainer">
+            <div class="card shadow mb-4 h-100">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                     <h6 class="m-0 font-weight-bold text-primary">Recent Activity</h6>
                     <div class="dropdown no-arrow">
@@ -162,31 +186,8 @@
             </div>
         </div>
 
-        <!-- Quick Actions -->
-        <div class="col-lg-4 mb-4">
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Quick Actions</h6>
-                </div>
-                <div class="card-body">
-                    <div class="d-grid gap-3">
-                        <a href="#" class="btn btn-primary btn-block">
-                            <i class="fas fa-user-plus me-2"></i> Add New Resident
-                        </a>
-                        <a href="#" class="btn btn-success btn-block">
-                            <i class="fas fa-calendar-plus me-2"></i> Create Event
-                        </a>
-                        <a href="#" class="btn btn-info btn-block">
-                            <i class="fas fa-bullhorn me-2"></i> Post Announcement
-                        </a>
-                        <a href="#" class="btn btn-warning btn-block">
-                            <i class="fas fa-file-export me-2"></i> Generate Report
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Recent Announcements -->
+        <!-- Recent Announcements -->
+        <div class="col-lg-12 order-lg-3">
             <div class="card shadow">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                     <h6 class="m-0 font-weight-bold text-primary">Recent Announcements</h6>
@@ -239,6 +240,10 @@
         background-color: #e9ecef;
     }
     
+    .main-content {
+        transition: all 0.3s ease;
+    }
+    
     .timeline-item {
         position: relative;
         padding-bottom: 1.5rem;
@@ -250,16 +255,27 @@
         width: 2rem;
         height: 2rem;
         border-radius: 50%;
-        text-align: center;
-        line-height: 2rem;
-        z-index: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
     
-    .timeline-content {
-        background-color: #fff;
-        border-radius: 0.35rem;
-        padding: 1rem;
-        box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,0.075);
+    .btn-outline-primary {
+        border-color: #4e73df;
+        color: #4e73df;
+        transition: all 0.2s ease;
+        padding: 0.5rem 1rem;
+        background-color: #f8f9fc;
+    }
+    
+    .btn-outline-primary:hover {
+        background-color: #eaecf4;
+        border-color: #2e59d9;
+        color: #224abe;
+    }
+    
+    .text-primary {
+        color: #4e73df !important;
     }
     
     .timeline-content h6 {
@@ -267,4 +283,50 @@
         color: #4e73df;
     }
 </style>
+
+<script>
+        // Handle minimize/close in dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            const quickActionsContainer = document.getElementById('quickActionsContainer');
+            const toggleQuickActions = document.getElementById('toggleQuickActions');
+            const recentActivityContainer = document.getElementById('recentActivityContainer');
+            let quickActionsInSidebar = true;
+            
+            function adjustLayout() {
+                if (!recentActivityContainer) return;
+                
+                if (quickActionsContainer.style.display === 'none') {
+                    recentActivityContainer.classList.add('col-lg-12', 'col-xxl-12');
+                    recentActivityContainer.classList.remove('col-lg-8', 'col-xxl-9');
+                } else {
+                    recentActivityContainer.classList.remove('col-lg-12', 'col-xxl-12');
+                    recentActivityContainer.classList.add('col-lg-8', 'col-xxl-9');
+                }
+            }
+            
+            // Initialize layout
+            if (quickActionsContainer) {
+                quickActionsContainer.style.display = 'none';
+                adjustLayout();
+            }
+            
+            // Toggle quick actions from sidebar button
+            if (toggleQuickActions) {
+                toggleQuickActions.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    
+                    if (quickActionsInSidebar) {
+                        quickActionsContainer.style.display = 'block';
+                        toggleQuickActions.innerHTML = '<i class="fas fa-bolt me-2"></i> Hide Quick Actions';
+                    } else {
+                        quickActionsContainer.style.display = 'none';
+                        toggleQuickActions.innerHTML = '<i class="fas fa-bolt me-2"></i> Show Quick Actions';
+                    }
+                    adjustLayout();
+                    quickActionsInSidebar = !quickActionsInSidebar;
+                });
+            }
+            
+        });
+    </script>
 @endsection

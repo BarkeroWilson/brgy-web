@@ -95,6 +95,35 @@
             margin-left: 0;
         }
         
+        .sidebar-actions {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #ffffff;
+            border-top: 1px solid #e3e6f0;
+            padding: 15px;
+        }
+        
+        .sidebar-actions .btn-outline-secondary {
+            transition: all 0.2s ease;
+            border: 1px solid #d1d3e2;
+            color: #6e707e;
+            font-weight: 500;
+            background-color: #f8f9fc;
+        }
+        
+        .sidebar-actions .btn-outline-secondary:hover {
+            background-color: #f1f3f9;
+            border-color: #bac8f3;
+            color: #5a5c69;
+        }
+        
+        /* Ensure the main content adjusts when quick actions are moved */
+        .main-content {
+            transition: all 0.3s ease;
+        }
+        
         .sidebar-menu {
             list-style: none;
             padding: 0;
@@ -281,7 +310,17 @@
             <li><a href="#"><i class="fas fa-chart-bar"></i> Reports</a></li>
             <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
         </ul>
+        
+        <!-- Quick Actions Button -->
+        <div class="sidebar-actions p-3 border-top">
+            <button class="btn btn-outline-secondary w-100 d-flex align-items-center justify-content-center" id="toggleQuickActions">
+                <i class="fas fa-bolt me-2"></i> Quick Actions
+            </button>
+        </div>
     </div>
+    
+    <!-- Quick Actions Panel (will be moved to dashboard) -->
+    <div id="quickActionsPlaceholder"></div>
 
     <!-- Main Content -->
     <div class="main-content" id="mainContent">
@@ -293,8 +332,66 @@
     
     <script>
         // Toggle sidebar on mobile
-        document.getElementById('sidebarToggle').addEventListener('click', function() {
+        document.getElementById('sidebarToggle').addEventListener('click', function(e) {
+            e.stopPropagation();
             document.getElementById('sidebar').classList.toggle('show');
+        });
+        
+        // Toggle quick actions between sidebar and dashboard
+        const toggleQuickActions = document.getElementById('toggleQuickActions');
+        const quickActionsContainer = document.getElementById('quickActionsContainer');
+        const recentActivityContainer = document.getElementById('recentActivityContainer');
+        let quickActionsInSidebar = true;
+        
+        // Function to adjust layout based on quick actions visibility
+        function adjustLayout() {
+            if (quickActionsContainer.style.display === 'none') {
+                recentActivityContainer.classList.add('col-lg-12', 'col-xxl-12');
+                recentActivityContainer.classList.remove('col-lg-8', 'col-xxl-9');
+            } else {
+                recentActivityContainer.classList.remove('col-lg-12', 'col-xxl-12');
+                recentActivityContainer.classList.add('col-lg-8', 'col-xxl-9');
+            }
+        }
+        
+        // Hide quick actions in dashboard initially and adjust layout
+        quickActionsContainer.style.display = 'none';
+        adjustLayout();
+        
+        // Toggle quick actions between sidebar and dashboard
+        toggleQuickActions.addEventListener('click', function(e) {
+            e.stopPropagation();
+            
+            if (quickActionsInSidebar) {
+                // Show in dashboard
+                quickActionsContainer.style.display = 'block';
+                // Update button text
+                toggleQuickActions.innerHTML = '<i class="fas fa-bolt me-2"></i> Hide Quick Actions';
+            } else {
+                // Hide from dashboard
+                quickActionsContainer.style.display = 'none';
+                // Reset button text
+                toggleQuickActions.innerHTML = '<i class="fas fa-bolt me-2"></i> Show Quick Actions';
+            }
+            
+            // Adjust the layout
+            adjustLayout();
+            
+            quickActionsInSidebar = !quickActionsInSidebar;
+        });
+        
+        // Handle minimize/close in dashboard
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('#minimizeQuickActions')) {
+                e.preventDefault();
+                // Hide from dashboard
+                quickActionsContainer.style.display = 'none';
+                // Reset button text
+                toggleQuickActions.innerHTML = '<i class="fas fa-bolt me-2"></i> Show Quick Actions';
+                quickActionsInSidebar = false;
+                // Adjust the layout
+                adjustLayout();
+            }
         });
         
         // Close sidebar when clicking outside on mobile
