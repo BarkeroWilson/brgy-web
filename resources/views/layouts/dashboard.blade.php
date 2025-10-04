@@ -269,7 +269,7 @@
             </a>
             <div class="ms-auto d-flex align-items-center">
                 <div class="dropdown">
-                    <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="nav-link d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <div class="me-3 text-end d-none d-md-block">
                             <div class="fw-semibold text-white text-uppercase">{{ strtoupper(Auth::user()->name) }}</div>
                             <div class="badge bg-white text-primary px-2 py-1" style="font-size: 0.7rem;">

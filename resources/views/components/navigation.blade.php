@@ -25,9 +25,15 @@
                     
                     <!-- Request Document Button -->
                     <li class="nav-item ms-lg-3 d-flex align-items-center">
-                        <a href="#" class="rd-button btn btn-primary px-3 py-1.5">
-                            <i class="fas fa-file-alt me-1"></i> Request Document
-                        </a>
+                        @auth
+                            <a href="#" class="rd-button btn btn-primary px-3 py-1.5">
+                                <i class="fas fa-file-alt me-1"></i> Request Document
+                            </a>
+                        @else
+                            <a href="{{ route('login') }}" class="rd-button btn btn-primary px-3 py-1.5">
+                                <i class="fas fa-file-alt me-1"></i> Request Document
+                            </a>
+                        @endauth
                     </li>
                     
                     @auth
@@ -42,7 +48,7 @@
                         
                         <!-- User Dropdown -->
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" 
+                            <a class="nav-link" href="#" id="userDropdown" role="button" 
                                data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="fas fa-user-circle me-1"></i> {{ Auth::user()->name }}
                             </a>
